@@ -4,6 +4,7 @@ config_version=5
 
 config/name="Veracruz Moto World"
 config/description="Videojuego de motocicletas de mundo abierto basado en Veracruz, Mexico."
+run/main_scene="res://escenas/principal.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [display]
