@@ -41,7 +41,6 @@ func crear_motocicleta():
     cuerpo.position.y = 0.5
 
     moto.add_child(cuerpo)
-
     moto.position.y = 0.2
     moto.set_script(load("res://scripts/motocicleta.gd"))
 
@@ -54,7 +53,11 @@ func crear_luz():
 
 func crear_camara():
     var camara = Camera3D.new()
-    camara.position = Vector3(8, 7, 10)
-    camara.look_at(Vector3(0, 0, 0))
+    camara.name = "CamaraSeguimiento"
+    camara.position = Vector3(0, 3, 7)
     camara.current = true
+
+    camara.set_script(load("res://camaras/seguimiento.gd"))
+
     add_child(camara)
+    camara.objetivo = get_node("Motocicleta")
