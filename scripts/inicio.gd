@@ -15,6 +15,7 @@ func _ready():
     crear_motocicleta()
     crear_luz()
     crear_camara()
+    crear_controles()
 
 func crear_sistemas():
     sistema_danos = Node.new()
@@ -51,7 +52,6 @@ func crear_suelo():
     var material = StandardMaterial3D.new()
     material.albedo_color = Color(0.25, 0.45, 0.20)
     suelo.material_override = material
-
     add_child(suelo)
 
 func crear_carretera():
@@ -64,7 +64,6 @@ func crear_carretera():
     var material = StandardMaterial3D.new()
     material.albedo_color = Color(0.12, 0.12, 0.12)
     carretera.material_override = material
-
     add_child(carretera)
 
 func crear_motocicleta():
@@ -94,9 +93,46 @@ func crear_camara():
     var camara = Camera3D.new()
     camara.name = "CamaraSeguimiento"
     camara.position = Vector3(0, 3, 7)
-
     camara.set_script(load("res://camaras/seguimiento.gd"))
     add_child(camara)
 
     camara.objetivo = get_node("Motocicleta")
     camara.current = true
+
+func crear_controles():
+    var capa = CanvasLayer.new()
+    capa.name = "ControlesTactiles"
+    add_child(capa)
+
+    var pantalla = Control.new()
+    pantalla.set_anchors_and_offsets_preset(
+        Control.PRESET_FULL_RECT
+    )
+    capa.add_child(pantalla)
+
+    var joystick = Control.new()
+    joystick.name = "Joystick"
+    joystick.position = Vector2(35, 450)
+    joystick.size = Vector2(160, 160)
+    joystick.set_script(load("res://controles/joystick.gd"))
+    pantalla.add_child(joystick)
+
+    joystick.direccion_cambiada.connect(
+        get_node("Motocicleta").establecer_direccion
+    )
+
+    var botones = Control.new()
+    botones.name = "Botones"
+    botones.set_anchors_and_offsets_preset(
+        Control.PRESET_FULL_RECT
+    )
+    botones.set_script(load("res://controles/botones.gd"))
+    pantalla.add_child(botones)
+
+    botones.acelerar_cambiado.connect(
+        get_node("Motocicleta").establecer_aceleracion
+    )
+
+    botones.frenar_cambiado.connect(
+        get_node("Motocicleta").establecer_freno
+    )
