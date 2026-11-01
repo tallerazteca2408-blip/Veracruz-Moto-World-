@@ -33,14 +33,11 @@ func crear_motocicleta():
     var moto = Node3D.new()
     moto.name = "Motocicleta"
 
-    var cuerpo = MeshInstance3D.new()
-    var malla = BoxMesh.new()
-    malla.size = Vector3(0.7, 0.5, 2)
+    var modelo = Node3D.new()
+    modelo.name = "ModeloNC750X"
+    modelo.set_script(load("res://vehiculos/motocicleta_3d.gd"))
+    moto.add_child(modelo)
 
-    cuerpo.mesh = malla
-    cuerpo.position.y = 0.5
-
-    moto.add_child(cuerpo)
     moto.position.y = 0.2
     moto.set_script(load("res://scripts/motocicleta.gd"))
 
