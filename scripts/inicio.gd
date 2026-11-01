@@ -10,9 +10,15 @@ func _ready():
 
 func crear_suelo():
     var suelo = MeshInstance3D.new()
-    var malla = BoxMesh.new()
-    malla.size = Vector3(100, 0.2, 100)
+    var malla = PlaneMesh.new()
+
+    malla.size = Vector2(20000, 20000)
     suelo.mesh = malla
+
+    var material = StandardMaterial3D.new()
+    material.albedo_color = Color(0.25, 0.45, 0.20)
+    suelo.material_override = material
+
     add_child(suelo)
 
 func crear_carretera():
@@ -52,4 +58,3 @@ func crear_camara():
     camara.look_at(Vector3(0, 0, 0))
     camara.current = true
     add_child(camara)
-
