@@ -1,3 +1,4 @@
+
 extends Node3D
 
 var sistema_danos
@@ -50,6 +51,7 @@ func crear_suelo():
     var material = StandardMaterial3D.new()
     material.albedo_color = Color(0.25, 0.45, 0.20)
     suelo.material_override = material
+
     add_child(suelo)
 
 func crear_carretera():
@@ -58,6 +60,11 @@ func crear_carretera():
     malla.size = Vector3(8, 0.1, 100)
     carretera.mesh = malla
     carretera.position.y = 0.15
+
+    var material = StandardMaterial3D.new()
+    material.albedo_color = Color(0.12, 0.12, 0.12)
+    carretera.material_override = material
+
     add_child(carretera)
 
 func crear_motocicleta():
@@ -73,6 +80,11 @@ func crear_motocicleta():
     moto.position.y = 0.2
     add_child(moto)
 
+    moto.configurar(
+        sistema_combustible,
+        sistema_danos
+    )
+
 func crear_luz():
     var luz = DirectionalLight3D.new()
     luz.rotation_degrees = Vector3(-45, -30, 0)
@@ -82,7 +94,9 @@ func crear_camara():
     var camara = Camera3D.new()
     camara.name = "CamaraSeguimiento"
     camara.position = Vector3(0, 3, 7)
+
     camara.set_script(load("res://camaras/seguimiento.gd"))
     add_child(camara)
+
     camara.objetivo = get_node("Motocicleta")
     camara.current = true
