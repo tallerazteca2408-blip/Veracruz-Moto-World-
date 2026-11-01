@@ -1,3 +1,4 @@
+
 extends Node3D
 
 var velocidad = 0.0
@@ -8,14 +9,26 @@ var velocidad_giro = 2.0
 
 var combustible = null
 var danos = null
+var direccion_joystick = Vector2.ZERO
+var acelerando_tactil = false
+var frenando_tactil = false
 
 func configurar(sistema_combustible, sistema_danos):
     combustible = sistema_combustible
     danos = sistema_danos
 
+func establecer_direccion(direccion: Vector2):
+    direccion_joystick = direccion
+
+func establecer_aceleracion(estado: bool):
+    acelerando_tactil = estado
+
+func establecer_freno(estado: bool):
+    frenando_tactil = estado
+
 func _process(delta):
-    var acelerando = Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP)
-    var frenando = Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN)
+    var acelerando = acelerando_tactil or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP)
+    var frenando = frenando_tactil or Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN)
 
     if acelerando and (combustible == null or combustible.gasolina > 0.0):
         velocidad = move_toward(velocidad, velocidad_maxima, aceleracion * delta)
@@ -30,12 +43,12 @@ func _process(delta):
     if danos != null:
         danos.agregar_desgaste(delta * velocidad * 0.001)
 
-    var direccion = 0
+    var direccion = direccion_joystick.x
 
     if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT):
-        direccion = -1
+        direccion = -1.0
     elif Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT):
-        direccion = 1
+        direccion = 1.0
 
     if abs(velocidad) > 0.1:
         rotate_y(-direccion * velocidad_giro * delta)
